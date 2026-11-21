@@ -132,17 +132,38 @@ func main() {
 	if !strings.HasSuffix(url, "/") {
 		url += "/"
 	}
-
-	protocol := "gemini://"	
-	protocol_splited := strings.Split(url, protocol)
 	
+	protocol := "gemini://"	
+
+	if !strings.HasPrefix(url, protocol) {
+		url = protocol + url
+	}
+
+	protocol_splited := strings.Split(url, protocol)
+
+	
+	path_splited := []string{}
 	// Get out the paths
-	path_splited := strings.Split(protocol_splited[1], "/")
+	if strings.HasPrefix(url, protocol) {
+		path_splited = strings.Split(protocol_splited[1], "/")
+	} else {
+		path_splited = strings.Split(protocol_splited[0], "/")
+	}
 
 	// e.g. geminiprotocol.net:1965
 	serverAddr := path_splited[0] + ":1965"
-	//fmt.Println(serverAddr)
-	
+	/*
+	if strings.HasPrefix(url, protocol) {
+		serverAddr = path_splited[1] + ":1965"
+	} else {
+		serverAddr = path_splited[1] + ":1965"
+	}*/
+	/*
+	fmt.Println(protocol_splited)
+	fmt.Println(path_splited)
+	fmt.Println(url)
+	fmt.Println(serverAddr)
+	*/
 	/*
  	tcpAddr, err := net.ResolveTCPAddr("tcp", serverAddr)
 
